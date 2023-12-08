@@ -18,29 +18,24 @@ function activate(context) {
 		const config = vscode.workspace.getConfiguration();
 		// Get input from user
 		let sens = config.get('editor.mouseWheelScrollSensitivit');
+
 		sens = await vscode.window.showInputBox({
 		  prompt: "Enter the new scroll sensitivity value:",
 		});
 		if (sens) {
 		  const newValue = parseFloat(sens);
 		  if (!isNaN(newValue)) {
-			config.update(
-			  "workbench.list.mouseWheelScrollSensitivity",
-			  newValue,
-			  true
-			);
 			config.update("editor.mouseWheelScrollSensitivity", newValue, true);
-			config.update(
-			  "terminal.integrated.mouseWheelScrollSensitivity",
-			  newValue,
-			  true
-			);
-			config.update(
-			  "terminal.integrated.fastScrollSensitivity",
-			  newValue,
-			  true
-			);
+			config.update("editor.fastScrollSensivity", newValue * 5, true);
+			
+			config.update("workbench.list.mouseWheelScrollSensitivity", newValue, true);
+			config.update("workbench.list.fastScrollSensitivity", newValue * 5, true);
+
+			config.update("terminal.integrated.mouseWheelScrollSensitivity",newValue,true);
+			config.update("terminal.integrated.fastScrollSensitivity",newValue * 5,true);
+
 			vscode.window.showInformationMessage("Sensitivity is now active!");
+			
 		  } else {
 			vscode.window.showErrorMessage(
 			  "Invalid input. Please enter a numeric value."
